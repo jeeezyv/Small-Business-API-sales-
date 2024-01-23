@@ -1,0 +1,720 @@
+<html>
+<head>
+    <title>Foton Candles API</title>
+    <style>
+        .hover-bold:hover {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #results-box {
+            max-height: 500px; /* Set a maximum height for the results box */
+            overflow-y: auto; /* Add a vertical scroll bar if the content exceeds the box height */
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body style="background-color:rgb(234, 239, 240); display: flex; justify-content: space-between;">
+
+    <div style="width: 50%; padding: 1em;">
+        <p style="font-size:25px; font-family:lucida console;"> Foton Candles API</p>
+        
+        <p style="font-size:25px; font-family:lucida console;" >APIs Available: </p> 
+        
+        <div>
+            <p style="font-size:20px; font-family:lucida console;" >Get Sales Info: </p> 
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <!-- <span class="hover-bold" onclick="runApi('http://127.0.0.1:5000/sales/perday')"><strong>GET</strong>  sales per day</span> <br> -->
+                <span class="hover-bold" onclick="salesperday()"><strong>GET</strong> sales per day</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <!-- <span class="hover-bold" onclick="runApi('http://127.0.0.1:5000/sales/month')"><strong>GET</strong>  sales per month</span> <br> -->
+                <span class="hover-bold" onclick="salespermonth()"><strong>GET</strong> sales per month</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <!-- <span class="hover-bold" onclick="runApi('http://127.0.0.1:5000/sales/producttype')"><strong>GET</strong>  sales per product type</span> <br> -->
+                <span class="hover-bold" onclick="salesperproducttype()"><strong>GET</strong> sales per product type</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="runApi('http://127.0.0.1:5000/sales/customertype')"><strong>GET</strong>  sales per customer type</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="runApi('http://127.0.0.1:5000/sales/perproductname')"><strong>GET</strong>  sales per product name</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+        </div>
+        <div>
+            <p style="font-size:20px; font-family:lucida console;" >Get Products Info: </p> 
+        <   <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="runApi('http://127.0.0.1:5000/product/allproductname')"><strong>GET</strong> list all products</span> <br>
+            <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="runApi('http://127.0.0.1:5000/product/type')"><strong>GET</strong>  list all products Types</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="productsWithLimit()"><strong>GET</strong> product list with specified limite</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="productsPerProductType()"><strong>GET</strong>  products per product type</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="getProductNameById()"><strong>GET</strong> product name by ID</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+        </div>
+
+        <div>
+            <p style="font-size:20px; font-family:lucida console;" >Update order and Get details: </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="orderPerOrderID()"><strong>GET</strong>  order by order ID</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="updateSalesQuantity()"><strong>POST</strong> update sales quantity</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+        </div>
+            
+        <div>
+            <p style="font-size:20px; font-family:lucida console;" >Post/Delete/Update info: </p> 
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="postNewProduct()"><strong>POST</strong>  new product</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            <p style="border-width:3px; border-style:solid; border-color:#001aff; padding: 1em; display: inline-block;">
+                <span class="hover-bold" onclick="deleteProduct()"><strong>DELETE</strong> product by ID</span> <br>
+                <!-- Add other API endpoints as needed -->
+            </p>
+            
+        </div>
+        
+            
+    </div>
+    
+    <div id="results-box" style="width: 50%; border-width:3px; border-style:solid; border-color:#001aff; padding: 1em;">
+        <p style="font-size:25px; font-family:lucida console;" ><strong>Results</strong> </p> 
+        <!--hr style="position: relative; top: 40%; left: 0; right: 0; border-width: 2px; border-style: solid; border-color: #001aff;">-->
+        <div id="api-results"></div>
+        <canvas id="salesPerDayChart" width="400" height="200"></canvas>
+        <canvas id="salesPerMonthChart" width="400" height="200"></canvas>
+        <canvas id="salesPerProductTypeChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        // Global variable to store the chart instance
+        let salesPerDayChart;
+        let salesPerMonthChart;
+        let salesPerProductTypeChart;
+
+        function createBarChartSalesPerDay(data) {
+            const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const sortedData = data.sort((a, b) => dayOrder.indexOf(a.weekday) - dayOrder.indexOf(b.weekday));
+            const labels = sortedData.map(item => item.weekday);
+            const totalSales = sortedData.map(item => item.total_sales);
+
+            const ctx = document.getElementById('salesPerDayChart').getContext('2d');
+
+            // Destroy the previous chart if it exists
+            if (salesPerDayChart) {
+                salesPerDayChart.destroy();
+            }
+
+            // Create a new bar chart
+            salesPerDayChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Sales per Day',
+                        data: totalSales,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false // Remove vertical gridlines
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false // Remove horizontal gridlines
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+}
+
+
+        function createBarChartSalesPerMonth(data) {
+            const labels = data.map(item => `${item.Month_Num}/${item.Year}`);
+            const monthlySales = data.map(item => item.Monthly_Sales$);
+
+            const ctx = document.getElementById('salesPerMonthChart').getContext('2d');
+
+            // Destroy the previous chart if it exists
+            if (salesPerMonthChart) {
+                salesPerMonthChart.destroy();
+            }
+
+            // Create a new bar chart for sales per month
+            salesPerMonthChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Monthly Sales',
+                        data: monthlySales,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false // Remove vertical gridlines
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false // Remove horizontal gridlines
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            // Adjust the position of the chart canvas within the results box
+                ctx.canvas.style.marginTop = '-200px'; // Adjust the value as needed
+        }
+
+        function createBarChartSalesPerProductType(data) {
+            const labels = data.map(item => item['Product type']);
+            const salesQty = data.map(item => item['Sales Qty']);
+
+            const ctx = document.getElementById('salesPerProductTypeChart').getContext('2d');
+
+            // Destroy the previous chart if it exists
+            if (salesPerProductTypeChart) {
+                salesPerProductTypeChart.destroy();
+            }
+
+            // Create a new bar chart for sales per product type
+            salesPerProductTypeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Sales Qty per Product Type',
+                        data: salesQty,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false // Remove vertical gridlines
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false // Remove horizontal gridlines
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true // Hide the legend
+                        }
+                    }
+                }
+            });
+
+            // Adjust the position of the chart canvas
+            ctx.canvas.style.marginTop = '-200px'; // Adjust the margin-top as needed
+        }
+
+
+        function clearSalesPerDayChart() {
+            // Destroy the salesPerDayChart if it exists
+            if (salesPerDayChart) {
+                salesPerDayChart.destroy();
+                salesPerDayChart = null;
+            }
+        }
+
+        function clearSalesPerMonthChart() {
+            // Destroy the salesPerMonthChart if it exists
+            if (salesPerMonthChart) {
+                salesPerMonthChart.destroy();
+                salesPerMonthChart = null;
+            }
+        }
+
+        function clearSalesPerProductTypeChart() {
+            // Destroy the salesPerProductTypeChart if it exists
+            if (salesPerProductTypeChart) {
+                salesPerProductTypeChart.destroy();
+                salesPerProductTypeChart = null;
+            }
+        }
+
+        
+        function clearResults() {
+            const resultsBox = document.getElementById("api-results");
+
+            // Clear the results box
+            resultsBox.innerHTML = '';
+
+             // Clear the specific chart canvases
+            clearSalesPerDayChart();
+            clearSalesPerMonthChart();
+            clearSalesPerProductTypeChart();
+        }
+
+                // // Destroy the salesPerDayChart if it exists
+            // if (salesPerDayChart) {
+            //     salesPerDayChart.destroy();
+            // }
+
+            // // Destroy the salesPerMonthChart if it exists
+            // if (salesPerMonthChart) {
+            //     salesPerMonthChart.destroy();
+            // }
+
+        //     // Clear the chart canvases
+        //     const chartCanvases = document.querySelectorAll('canvas');
+        //     chartCanvases.forEach(canvas => {
+        //         const context = canvas.getContext('2d');
+        //         context.clearRect(0, 0, canvas.width, canvas.height);
+        //     });
+        // }
+
+
+        async function salesperday() {
+            clearResults();
+        try {
+            // Make a GET request to the API endpoint for sales per day
+            const apiEndpoint = 'http://127.0.0.1:5000/sales/perday';
+            const response = await fetch(apiEndpoint);
+            const data = await response.json();
+
+            // Display the results in the results box
+            const resultsBox = document.getElementById("api-results");
+
+            // Check if the response has the expected structure for "GET sales per day"
+            if (Array.isArray(data) && data.every(item => 'total_sales' in item && 'weekday' in item)) {
+                // Create a bar chart
+                createBarChartSalesPerDay(data);
+            } 
+            
+            resultsBox.innerHTML = formatResults(data);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }
+
+        async function salespermonth() {
+            clearResults();
+            try {
+                // Make a GET request to the API endpoint for sales per day
+                const apiEndpoint = 'http://127.0.0.1:5000/sales/month';
+                const response = await fetch(apiEndpoint);
+                const data = await response.json();
+
+                // Display the results in the results box
+                const resultsBox = document.getElementById("api-results");
+
+                // Check if the response has the expected structure for "GET sales per month"
+                if (Array.isArray(data) && data.every(item => 'Month_Num' in item && 'Monthly_Sales$' in item && 'Year' in item)) {
+                    // Create a bar chart
+                    createBarChartSalesPerMonth(data);
+                }  else {
+                    // Display the results in JSON format if not in the expected structure
+                    resultsBox.innerHTML = formatResults(data);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+
+        async function salesperproducttype() {
+            clearResults();
+            try {
+                // Make a GET request to the API endpoint for sales per product type
+                const apiEndpoint = 'http://127.0.0.1:5000/sales/producttype';
+                const response = await fetch(apiEndpoint);
+                const data = await response.json();
+
+                // Display the results in the results box
+                const resultsBox = document.getElementById("api-results");
+
+                // Check if the response has the expected structure for "GET sales per product type"
+                if (Array.isArray(data) && data.every(item => 'Product type' in item && 'Sales Qty' in item)) {
+                    // Create a bar chart
+                    createBarChartSalesPerProductType(data);
+                }  else {
+                    // Display the results in JSON format if not in the expected structure
+                    resultsBox.innerHTML = formatResults(data);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        async function productsWithLimit() {
+            try {
+                // Prompt user for input
+                const userInput = prompt("Enter limit for number of products:");
+    
+                // Check if the user clicked Cancel
+                if (userInput === null) {
+                    return;
+                }
+    
+                const apiEndpoint = `http://127.0.0.1:5000/product/allproductname?limit=${userInput}`;
+                await runApi(apiEndpoint);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        async function productsPerProductType() {
+            try {
+                // Prompt user for input
+                const userInput = prompt("Enter Product Type:");
+    
+                // Check if the user clicked Cancel
+                if (userInput === null) {
+                    return;
+                }
+    
+                const apiEndpoint = `http://127.0.0.1:5000/product/allproductname?product_type=${userInput}`;
+                await runApi(apiEndpoint);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        async function getProductNameById() {
+    try {
+        // Prompt user for input
+        const productId = prompt("Enter product ID:");
+
+        // Check if the user clicked Cancel
+        if (productId === null) {
+            return;
+        }
+
+        // Send GET request to the API
+        const apiEndpoint = `http://127.0.0.1:5000/product/id?product_id=${productId}`;
+        const response = await fetch(apiEndpoint);
+        const data = await response.json();
+
+        console.log("API Response:", data);
+
+        // Display the results in the results box
+        const resultsBox = document.getElementById("api-results");
+
+        // Check if the response has the expected structure
+        if ('Product_Name' in data) {
+            // Display the result in the desired format
+            resultsBox.innerHTML = `<div>Product_Name: ${data.Product_Name}</div>`;
+        } else {
+            // Display a generic message for unexpected response format
+            resultsBox.innerHTML = `<div>Unexpected response format</div>`;
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+         }           
+
+        async function orderPerOrderID() {
+            try {
+                // Prompt user for input
+                const userInput = prompt("Enter Order ID:");
+    
+                // Check if the user clicked Cancel
+                if (userInput === null) {
+                    return;
+                }
+    
+                const apiEndpoint = `http://127.0.0.1:5000/sales/ordername?order_name=${userInput}`;
+                await runApi(apiEndpoint);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+        async function postNewProduct() {
+            try {
+                // Prompt user for input for each parameter
+                const productID = prompt("Enter product ID:");
+                const productType = prompt("Enter product type:");
+                const productName = prompt("Enter product name:");
+                const productCat1 = prompt("Enter product category 1:");
+                const productCat2 = prompt("Enter product category 2:");
+
+                // Check if the user clicked Cancel on any prompt
+                if (productID === null || productType === null || productName === null || productCat1 === null || productCat2 === null) {
+                    return;
+                }
+
+                // Construct JSON object
+                const productData = {
+                    product_id: productID,
+                    product_type: productType,
+                    product_name: productName,
+                    product_cat_1: productCat1,
+                    product_cat_2: productCat2
+                };
+
+                // Send POST request to the API
+                const apiEndpoint = 'http://127.0.0.1:5000/product/postnewproduct';
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                const data = await response.json();
+                
+                console.log("API Response:", data);
+
+                // Display the results in the results box
+                const resultsBox = document.getElementById("api-results");
+
+                // Convert the JavaScript object to a formatted JSON string
+                const formattedJson = JSON.stringify(data, null, 2);
+
+                // Display the formatted JSON string in the results box
+                resultsBox.innerHTML = `<pre>${formattedJson}</pre>`;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+        
+        async function deleteProduct() {
+            try {
+                // Prompt user for input
+                const productIdToDelete = prompt("Enter product ID to delete:");
+
+                // Check if the user clicked Cancel
+                if (productIdToDelete === null) {
+                    return;
+                }
+
+                // Send DELETE request to the API
+                const apiEndpoint = `http://127.0.0.1:5000/product/delete_product/${productIdToDelete}`;
+                const response = await fetch(apiEndpoint, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                console.log("API Response:", data);
+
+                // Display the results in the results box
+                const resultsBox = document.getElementById("api-results");
+
+                // Convert the JavaScript object to a formatted JSON string
+                const formattedJson = JSON.stringify(data, null, 2);
+
+                // Display the formatted JSON string in the results box
+                resultsBox.innerHTML = `<pre>${formattedJson}</pre>`;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+        
+        async function updateSalesQuantity() {
+            try {
+                console.log("Function triggered!"); // Check if the function is triggered
+
+                // Prompt user for input for each parameter
+                const order_name = prompt("Enter Order_ID:");
+                const Product_Id = prompt("Enter product ID:");
+                const new_quantity = prompt("Enter new quantity:");
+
+                console.log("Inputs:", order_name, Product_Id, new_quantity); // Check if inputs are captured
+
+                // Check if the user clicked Cancel on any prompt
+                if (order_name === null || Product_Id === null || new_quantity === null) {
+                    console.log("User canceled!"); // Check if the user canceled
+                    return;
+                }
+
+                // Construct JSON object
+                const productData = {
+                    order_name: order_name,
+                    Product_Id: Product_Id,
+                    new_quantity: new_quantity
+                };
+
+                // Send POST request to the API
+                const apiEndpoint = 'http://127.0.0.1:5000/sales/update';
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                const data = await response.json();
+
+                console.log("API Response:", data);
+
+                // Display the results in the results box
+                const resultsBox = document.getElementById("api-results");
+
+                // Convert the JavaScript object to a formatted JSON string
+                const formattedJson = JSON.stringify(data, null, 2);
+
+                // Display the formatted JSON string in the results box
+                resultsBox.innerHTML = `<pre>${formattedJson}</pre>`;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+             
+
+        async function runApi(apiEndpoint) {
+    try {
+        console.log("Calling API:", apiEndpoint);
+
+        clearResults();  // Clear results before making a new API call
+
+        const response = await fetch(apiEndpoint);
+        const data = await response.json();
+
+        console.log("API Response:", data);
+
+        // Display the results in the results box
+        const resultsBox = document.getElementById("api-results");
+
+        // Always display the non-JSON results
+        resultsBox.innerHTML = formatResults(data);
+        
+        // Check if the response has the expected structure for "GET list all products"
+        if (Array.isArray(data) && data.every(item => 'Product' in item && 'Product_id' in item)) {
+            // Display each item in the desired format for "GET list all products"
+            resultsBox.innerHTML = data.map(item => `
+                <div>
+                    Product: ${item['Product']}<br>
+                    Product_id: ${item['Product_id']}
+                </div>
+                <br>`).join('');
+        } else if ('Order_Details' in data && Array.isArray(data.Order_Details)) {
+            // Display each item in the desired format for "GET order details by order ID"
+            resultsBox.innerHTML = data.Order_Details.map(item => `
+                <div>
+                    Date: ${item.Date}<br>
+                    Net_Quantity: ${item.Net_Quantity}<br>
+                    Product_ID: ${item.Product_ID}<br>
+                    Product_Name: ${item.Product_Name}<br>
+                    customer_type: ${item.customer_type}<br>
+                    order_id: ${item.order_id}<br>
+                    total_sales: ${item.total_sales}
+                </div>
+                <br>`).join('');
+        } else if (Array.isArray(data) && data.every(item => 'Product Type' in item )) {
+            // Display each item in the desired format for "GET list product type"
+            resultsBox.innerHTML = data.map(item => `
+                <div>
+                    Product Type: ${item['Product Type']}<br>
+                </div>
+                <br>`).join('');
+        } else if (Array.isArray(data) && data.every(innerArray => Array.isArray(innerArray) && innerArray.every(item => 'Customer Type' in item && ('Total Sales' in item || 'Percentage' in item)))) {
+            // Display each item in the desired format for "GET sales per customer type"
+            resultsBox.innerHTML = data.map(innerArray => innerArray.map(item => `
+                <div>
+                    Customer Type: ${item['Customer Type']}<br>
+                    ${'Total Sales' in item ? 'Total Sales' : 'Percentage'}: ${item['Total Sales'] || item['Percentage']}
+                </div>
+                <br>`).join('')).join('');
+        } else if (Array.isArray(data) && data.every(item => 'Product type' in item && 'Sales Qty' in item)) {
+            // Display each item in the desired format for "GET sales per product type"
+            resultsBox.innerHTML = data.map(item => `
+                <div>
+                    Product type: ${item['Product type']}<br>
+                    Sales Qty: ${item['Sales Qty']}
+                </div>
+                <br>`).join('');
+        // } else if (Array.isArray(data) && data.every(item => 'total_sales' in item && 'weekday' in item)) {
+        //     // Display each item in the desired format for "GET sales per day"
+        //     resultsBox.innerHTML = data.map(item => `
+        //         <div>
+        //             total_sales: ${item.total_sales}<br>
+        //             weekday: ${item.weekday}
+        //         </div>
+        //         <br>`).join('');
+        //         // Create a bar chart
+        //     createBarChartSalesPerDay(data);
+        } else if (Array.isArray(data) && data.every(item => 'Month_Num' in item && 'Monthly_Sales$' in item && 'Year' in item)) {
+            // Display sales per month in the desired format for "GET sales per month"
+            resultsBox.innerHTML = data.map(item => `
+                <div>
+                    Month_Num: ${item.Month_Num}<br>
+                    Monthly_Sales$: ${item.Monthly_Sales$}<br>
+                    Year: ${item.Year}
+                </div>
+                <br>`).join('');
+        } else if (Array.isArray(data) && data.every(item => 'Product' in item && 'Total Sales' in item)) {
+            // Display each item in the desired format for "GET sales per product name"
+            resultsBox.innerHTML = data.map(item => `
+                <div>
+                    Product: ${item.Product}<br>
+                    Total Sales: ${item['Total Sales']}
+                </div>
+                <br>`).join('');
+        } else {
+            // Display a generic message for unexpected response format
+            resultsBox.innerHTML = `<div>Unexpected response format</div>`;
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+        // Function to format results (customize this based on your needs)
+            function formatResults(data) {
+                // Your formatting logic here
+                // For simplicity, you can return a string representation of the data
+                const isSalesPerDay = Array.isArray(data) && data.every(item => 'total_sales' in item && 'weekday' in item);
+
+                if (isSalesPerDay) {
+                    // Create a bar chart
+                    createBarChartSalesPerDay(data);
+                    return ''; // Return an empty string to prevent displaying JSON results
+                }
+
+                // Display the results in JSON format
+                return JSON.stringify(data, null, 2);
+            }
+</script>
+            
+</body>
+</html>

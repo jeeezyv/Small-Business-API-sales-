@@ -1,0 +1,4 @@
+flask
+pandas
+statsmodels
+flask_cors
