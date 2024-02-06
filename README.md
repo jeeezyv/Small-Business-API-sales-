@@ -1,4 +1,4 @@
-# Small Business Operational Aanlytics Database and Dashboard
+# Small Business Operational Aanlytics Database, API & Dashboard
 
 
 # API Documentation
