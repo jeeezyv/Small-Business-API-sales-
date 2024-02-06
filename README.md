@@ -1,4 +1,4 @@
-#Group-Project-ISYS-5713-Hannala-Jacob
+# Small Business Operational Aanlytics Database and Dashboard
 
 
 # API Documentation
