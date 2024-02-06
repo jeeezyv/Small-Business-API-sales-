@@ -2,7 +2,7 @@
 
 
 # API Documentation
-This API provides operational performance analytics to a small business that it uses to assist them in making data-driven decisions.The API also provides a mechanism for the users to be viewed, added, updated, and deleted.
+This API provides operational performance analytics to a small business that it uses to assist them in making data-driven decisions.The API provides the business the ability to be view, add, update, and delete data through a dashboard supported through a browswer.
 
 **Tables and Endpoints:**
 1. Static tables:
